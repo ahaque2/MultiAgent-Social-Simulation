@@ -1,1 +1,3 @@
-## Understanding echo chambers and political polarization via social simulation
+## Understanding Dynamics of Polarization via Multiagent Social Simulation
+
+We create a multiagent social simulation to study the dynamics of polarization in social networks. We adopt Social Judgment Theory and model user behavior based on empirical evidence from past studies and analyze how the sharing of content affects user satisfaction and political inclination. We find that (1) the extent of selective exposure has no effect on polarization; (2) balanced discussions increase polarization over when one issue dominates; and (3) having more tolerant users slows polarization down. Moreover, user satisfaction is lowest in networks with low selective exposure, imbalanced discussions, and intolerant users
