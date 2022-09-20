@@ -10,7 +10,7 @@ from mesa.space import NetworkGrid
 from mesa.datacollection import DataCollector
 
 import networkx as nx
-from numba import jit
+# from numba import jit
 
 from state import State
 
@@ -18,7 +18,7 @@ from state import State
 class MyAgent(Agent):
     
     """ An agent in an epidemic model."""
-    def __init__(self, unique_id, model, se_flag, se_threshold, G):
+    def __init__(self, unique_id, model, se_flag, se_threshold, issue_weights, G, seed):
         super().__init__(unique_id, model)
         
         self.sim_model = model
@@ -27,6 +27,13 @@ class MyAgent(Agent):
         self.se_flag = se_flag
         self.G = G
         self.se_threshold = se_threshold
+        self.issue_weights = issue_weights
+        self.sign = lambda x: x and (1, -1)[x<0]
+        
+#         self.seed = seed
+#         print(type(self.sim_model))
+#         self.sim_model.reset_randomizer(seed)
+        random.seed(seed)
         
     def create_post(self):
         
@@ -36,12 +43,11 @@ class MyAgent(Agent):
         
     def get_user_details(self, user_id, issue_id):
         
-        pol_interest = self.G.nodes[user_id]['pol_interest']
         user_activity = self.G.nodes[user_id]['user_activity']
         user_stance = self.G.nodes[user_id]['issue_' + str(int(issue_id))]
         privacy_preference = self.G.nodes[user_id]['privacy_preference']
         
-        return pol_interest, user_activity, user_stance, privacy_preference
+        return user_activity, user_stance, privacy_preference
         
     def compute_sanction_score(self, user_id):
         
@@ -49,9 +55,15 @@ class MyAgent(Agent):
         issue_id = self.sim_model.post['issue']
         post_stance = self.sim_model.post['stance']
         
-        pol_interest, user_activity, user_stance, privacy_preference = self.get_user_details(user_id, issue_id)
-        sanction_score = user_activity * user_stance * post_stance * 10
-          
+        user_activity, user_stance, privacy_preference = self.get_user_details(user_id, issue_id)
+        
+        diff = abs(user_stance - post_stance)
+        dir_mov = self.sign(diff)
+        # dir_mov = abs(diff)
+        sanction_score = user_activity * user_stance * post_stance * 10 * self.issue_weights[issue_id]
+#         sanction_score = dir_mov * (user_activity * self.issue_weights[issue_id])/(diff*diff + 1) 
+        #print("user_activity ", author, user_id, post_stance, user_activity, sanction_score)
+            
         return round(sanction_score, 6)
     
     def compute_sharing_probability(self, user_id):
@@ -59,9 +71,12 @@ class MyAgent(Agent):
         issue_id = self.sim_model.post['issue']
         post_stance = self.sim_model.post['stance']
         
-        pol_interest, user_activity, user_stance, privacy_preference = self.get_user_details(user_id, issue_id)
-        sharing_prob = user_activity * abs(user_stance * post_stance) * privacy_preference * 10
-        #sharing_prob = 1
+        user_activity, user_stance, privacy_preference = self.get_user_details(user_id, issue_id)
+        
+        diff = abs(user_stance - post_stance)
+        # dir_mov = abs(diff)
+#         sharing_prob = (user_activity * privacy_preference * self.issue_weights[issue_id])/(diff*diff + 1)
+        sharing_prob = user_activity * abs(user_stance * post_stance) * privacy_preference * 10 * self.issue_weights[issue_id]
            
         return round(sharing_prob, 6)
         
@@ -74,9 +89,10 @@ class MyAgent(Agent):
         elif self.state == State.RECEIVED:
             
             sharing_prob = self.compute_sharing_probability(self.user_id)
-            rnd = self.random.random()
+            rnd = random.random()
             
             if(rnd < sharing_prob):
+                
                 self.share_post()
                 self.state = State.SPREADER
             
@@ -116,9 +132,6 @@ class MyAgent(Agent):
         nstance_df['stance_diff'] = nstance_df['stance_diff'].abs()
         
         selected_neighbors = nstance_df[nstance_df['stance_diff'] <= self.se_threshold]['user_id']
-        
-#         pol_interest, user_activity, user_stance, privacy_preference = self.get_user_details(self.user_id, issue_id)
-#         npol_interest, nuser_activity, nuser_stance, nprivacy_preference = self.get_user_details(self.user_id, issue_id)
         
 #         pol_inclination = data[data['id'] == self.user_id]['issue_'+str(issue_id)].values[0]
 #         neighbor_inclination = data[data['id'].isin(neighbor_nodes)]

@@ -1,0 +1,8 @@
+,unique_authors_count,num_of_agents_received,num_of_agents_not_received,num_of_spreader_agents,num_of_disinterested_agents,sim_set
+0,101.76,39.88,60.12,14.49,25.39,TOL-low
+0,99.83,46.05,53.95,17.3,28.75,TOL-med
+0,100.45,37.01,62.99,13.36,23.65,TOL-high
+0,100.87,45.25,54.75,16.88,28.36,SE-none
+0,100.99,44.56,55.44,16.48,28.08,SE-low
+0,100.54,41.1,58.9,13.8,27.3,SE-med
+0,101.34,17.37,82.63,4.97,12.4,SE-high

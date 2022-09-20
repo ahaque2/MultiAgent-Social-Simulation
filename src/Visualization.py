@@ -13,7 +13,7 @@ import networkx as nx
 from matplotlib.colors import ListedColormap, LinearSegmentedColormap
 import pylab as pl
 from IPython import display
-from numba import jit
+# from numba import jit
 from matplotlib import cm
 
 from bokeh.io import show, output_notebook
