@@ -15,6 +15,6 @@ The code for the data can be found under the *'src'* directory
 - *Exp1_SE.ipynb* contains code to run the experiment 1 (with different levels of selective exposure)
 - *Exp2_TOL.ipynb* contains code to run the experiment 2 (with different levels of user tolerance)
 
-The results can be found under the *'results'* directory. Results for experiment 1 can be found under the folder *SE*, and for experiment 2 under the folder *TOL* (results are for each simulation run). SE_avg and TOL_avg contains the average from all the results (i.e., average of multiple simulation runs)
+The results can be found under the *'results'* directory. Results for experiment 1 can be found under the folder *'SE'*, and for experiment 2 under the folder *'TOL'* (results are for each simulation run). SE_avg and TOL_avg contains the average from all the results (i.e., average of multiple simulation runs)
 - *final_data_xx.csv* files contain the final attribute values of all agents after 5k posts have been shared
 - *results_xx.csv* files contain all the primary and secondary metrics after each post has been shared in the social network
