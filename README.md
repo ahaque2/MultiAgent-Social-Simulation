@@ -1,3 +1,18 @@
 ## Understanding Dynamics of Polarization via Multiagent Social Simulation
 
-We create a multiagent social simulation to study the dynamics of polarization in social networks. We adopt Social Judgment Theory and model user behavior based on empirical evidence from past studies and analyze how the sharing of content affects user satisfaction and political inclination. We find that (1) the extent of selective exposure has no effect on polarization; (2) balanced discussions increase polarization over when one issue dominates; and (3) having more tolerant users slows polarization down. Moreover, user satisfaction is lowest in networks with low selective exposure, imbalanced discussions, and intolerant users
+Understanding polarization in social networks is challenging because it depends not only on user attitudes but also their interactions and exposures to information. We adopt Social Judgment Theory to operationalize attitude shift and model user behavior based on empirical evidence from past studies. We design a social simulation to analyze how content sharing affects user satisfaction and polarization in a social network. We investigate the influence of varying tolerance in users and selectively exposing users to congenial views. We find that (1) higher user tolerance slows down polarization and leads to lower user satisfaction; (2) higher selective exposure leads to higher polarization and lower user reach; and (3) both higher tolerance and higher selective exposure lead to a more homophilic social network.
+
+### Data and Code
+
+The seed data used in the simulation can be found under the *'data'* directory. 
+- initial_data_x.csv contains the attributes of all agents at the start of the simulation
+- facebook_graph.txt contains the information about the social network (i.e., connections in the graph)
+- post_conf.csv contains the list of all posts (each post has an associated issue it is on and a stance score)
+
+The code for the data can be found under the *'src'* directory.
+- *Exp1_SE.ipynb* contains code to run the experiment 1 (with different levels of selective exposure)
+- *Exp2_TOL.ipynb* contains code to run the experiment 2 (with different levels of )user tolerance)
+
+The results can be found under the *'results'* directory. Results for experiment 1 can be found under the folder *SE*, and for experiment 2 under the folder *TOL* (results are for each simulation run). SE_avg and TOL_avg contains the average from all the results (i.e., average of multiple simulation runs). 
+- *final_data_xx.csv* files contain the final attribute values of all agents after 5k posts have been shared.
+- *results_xx.csv* files contain the all the primary and secondary metrics after each post has been shared in the social network.
