@@ -5,9 +5,9 @@ Understanding polarization in social networks is challenging because it depends 
 ### Data and Code
 
 The seed data used in the simulation can be found under the *'data'* directory. 
-- *initial_data_x.csv* contains the attributes of all agents at the start of the simulation
-- *facebook_graph.txt* contains the information about the social network (i.e., connections in the graph)
-- *post_conf.csv* contains the list of all posts (each post has an associated issue it is on and a stance score)
+- *initial_data_x.csv* files contain the attributes of all agents at the start of the simulation
+- *facebook_graph.txt* files contain the information about the social network (i.e., connections in the graph)
+- *post_conf.csv* files contain the list of all posts (each post has an associated issue it is on and a stance score)
 
 The code for the data can be found under the *'src'* directory.
 - *Exp1_SE.ipynb* contains code to run the experiment 1 (with different levels of selective exposure)
