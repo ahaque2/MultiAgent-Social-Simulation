@@ -4,6 +4,8 @@ Understanding polarization in social networks is challenging because it depends 
 
 ### Data and Code
 
+This repository contains the data and code to reproduce the results of our experimentats. In additions the repository also contains the results generated over multiple simulation runs along with statistical analysis of the results.
+
 The seed data used in the simulation can be found under the *'data'* directory. 
 - *initial_data_x.csv* files contain the attributes of all agents at the start of the simulation
 - *facebook_graph.txt* files contain the information about the social network (i.e., connections in the graph)
