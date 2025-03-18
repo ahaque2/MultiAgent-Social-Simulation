@@ -18,3 +18,7 @@ The code for the data can be found under the *'src'* directory
 The results can be found under the *'results'* directory. Results for experiment 1 can be found under the folder *'SE'*, and for experiment 2 under the folder *'TOL'* (results are for each simulation run). SE_avg and TOL_avg contains the average from all the results (i.e., average of multiple simulation runs)
 - *final_data_xx.csv* files contain the final attribute values of all agents after 5k posts have been shared
 - *results_xx.csv* files contain all the primary and secondary metrics after each post has been shared in the social network
+
+Kindly cite our paper if you use any of our code or results. 
+
+Haque, A., Ajmeri, N. & Singh, M.P. *Understanding dynamics of polarization via multiagent social simulation.* AI & Soc 38, 1373–1389 (2023). [DOI: 10.1007/s00146-022-01626-5](https://doi.org/10.1007/s00146-022-01626-5)
