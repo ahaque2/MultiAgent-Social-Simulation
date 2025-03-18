@@ -1,0 +1,1 @@
+Initial distributions used in each simulation run, artificially generated posts that we use int this simulation, and the social network (Facebook graph) we use

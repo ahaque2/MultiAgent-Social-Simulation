@@ -1,3 +1,5 @@
+### This code defines the network and all agents for the information diffusion model
+
 import time, enum, math
 import numpy as np
 import pandas as pd
@@ -12,13 +14,15 @@ from mesa.datacollection import DataCollector
 from Agent import MyAgent
 
 import networkx as nx
-from numba import jit
+# from numba import jit
 
 
 class NetworkInformationDiffusionModel(Model):
     """A model for information diffusion."""
     
-    def __init__(self, post, G, se_flag, se_threshold):
+    def __init__(self, post, G, se_flag, se_threshold, issue_weights, seed):
+        
+#         Model.reset_randomizer(seed)
         
         self.post = post
         self.i = -1
@@ -36,7 +40,7 @@ class NetworkInformationDiffusionModel(Model):
         # Create agents
         self.agents = []
         for i, node in enumerate(self.G.nodes()):
-            a = MyAgent(i, self, se_flag, se_threshold, self.G)
+            a = MyAgent(i, self, se_flag, se_threshold, issue_weights, self.G, seed)
             self.agents.append(a)
             self.grid.place_agent(a, node)
  
@@ -44,7 +48,7 @@ class NetworkInformationDiffusionModel(Model):
         self.datacollector = DataCollector(
             agent_reporters={"State": "state"})
         
-    @jit
+#     @jit
     def step(self, i):
         
         self.i = i

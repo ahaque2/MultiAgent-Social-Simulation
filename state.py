@@ -1,3 +1,5 @@
+### Defines possible user states to choose from
+
 import time, enum, math
 
 class State(enum.IntEnum):

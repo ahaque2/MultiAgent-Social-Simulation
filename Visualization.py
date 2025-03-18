@@ -1,3 +1,5 @@
+### Code to visualize the sanction graph and social network
+
 import time, enum, math
 import numpy as np
 import pandas as pd
@@ -13,7 +15,7 @@ import networkx as nx
 from matplotlib.colors import ListedColormap, LinearSegmentedColormap
 import pylab as pl
 from IPython import display
-from numba import jit
+# from numba import jit
 from matplotlib import cm
 
 from bokeh.io import show, output_notebook

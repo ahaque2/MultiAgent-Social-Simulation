@@ -1,3 +1,5 @@
+### This is the code to define and update agent attributes and transitions across different states
+
 import time, enum, math
 import numpy as np
 import pandas as pd

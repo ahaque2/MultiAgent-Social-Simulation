@@ -1,3 +1,5 @@
+### This code controls the flow of information in the social network
+
 import time, enum, math
 import numpy as np
 import pandas as pd
@@ -8,7 +10,12 @@ import random
 import networkx as nx
 from sklearn.utils import shuffle
     
-class Data:   
+class Data:  
+    
+    def __init__(self, seed):
+        
+        random.seed(seed)
+        np.random.seed(seed)
     
     def creat_social_network(self, edges):
 
@@ -28,7 +35,7 @@ class Data:
 
     def get_fb_network(self, df):
 
-        fb_network = open('../data/facebook_graph.txt', 'r').read()
+        fb_network = open('../../data/facebook_combined.txt', 'r').read()
         G = self.creat_social_network(fb_network)
         A = nx.adjacency_matrix(G).todense()
         A = np.array(A)
@@ -44,29 +51,37 @@ class Data:
         return [bounds_dlower + (x - bounds_alower) * (bounds_dupper - bounds_dlower) / (bounds_aupper - bounds_alower) for x in values]
     
     def get_agent_pol_inclinations(self, df, n_issues):
-    
-        dem_fav_topics = ['issue_' + str(x) for x in range(n_issues) if x%2 == 0]
-        rep_fav_topics = ['issue_' + str(x) for x in range(n_issues) if x%2 == 1]
-        mean_rep_support = df[rep_fav_topics].mean(axis = 1)
-        mean_dem_support = df[dem_fav_topics].mean(axis = 1) 
+
+        issues = ['issue_' + str(x) for x in range(n_issues)]
         
-#         print("mean_rep_support ", mean_rep_support)
-#         print()
-#         print("mean_dem_support ", mean_dem_support)
-        
-        pol_inclination = mean_dem_support - mean_rep_support
-#         print("pol_inclination")
-#         print(pol_inclination)
-#         sys.exit()
-        
-        
+        pol_inclination = df[issues].mean(axis = 1)
+        pol_inclination = pol_inclination.clip(-1, 1)
+
         if(any(pol_inclination) < -1 or any(pol_inclination) > 1):
             print("Pol inclination exceed 1 or is lowers than -1 \n", df)
             sys.exit()
 
         return pol_inclination
-    
-    
+
+
+#     def get_agent_pol_inclinations(self, df, n_issues):
+
+#             dem_fav_topics = ['issue_' + str(x) for x in range(n_issues) if x%2 == 0]
+#             rep_fav_topics = ['issue_' + str(x) for x in range(n_issues) if x%2 == 1]
+#             mean_rep_support = df[rep_fav_topics].mean(axis = 1)
+#             mean_dem_support = df[dem_fav_topics].mean(axis = 1) 
+
+#             pol_inclination = mean_dem_support - mean_rep_support
+
+#             pol_inclination = pol_inclination.clip(-1, 1)
+
+#             if(any(pol_inclination) < -1 or any(pol_inclination) > 1):
+#                 print("Pol inclination exceed 1 or is lowers than -1 \n", df)
+#                 sys.exit()
+
+#             return pol_inclination
+        
+
     def add_issue_stance(self, df, G, issue_ids, n_issues):
     
         mean_norm = lambda x: np.round((x-x.mean())/(x.max() - x.min()), 6)
@@ -81,15 +96,14 @@ class Data:
         node_attr = df.set_index('id').to_dict('index')
         nx.set_node_attributes(G, node_attr)
 
-    
         return G, df
 
 
     def get_social_network(self, n_issues):
 
-        #G = nx.karate_club_graph()
-        fb_network = open('../data/facebook_graph.txt', 'r').read()
-        G = self.creat_social_network(fb_network)
+        G = nx.karate_club_graph()
+        # fb_network = open('../data/facebook_combined.txt', 'r').read()
+        # G = self.creat_social_network(fb_network)
         A = nx.adjacency_matrix(G).todense()
         A = np.array(A)
         n = A.shape[0]
@@ -97,30 +111,22 @@ class Data:
 
         df = pd.DataFrame()
         df['id'] = range(n)
-    #     df['gender'] = list(np.random.choice(a=[0, 1], size=n, p=[0.5, 0.5]))
-    #     df['age'] = list(np.random.choice(a=[0, 1, 2], size=n, p=[0.6, 0.3, 0.1]))
-    #     df['education'] = list(np.random.choice(a=[0, 1, 2], size=n, p=[0.6, 0.3, 0.1]))
-    #     df['income'] = list(np.random.choice(a=[0, 1, 2], size=n, p=[0.6, 0.3, 0.1]))
 
         min_max_norm = lambda x: np.round((x-x.min())/(x.max() - x.min()), 6)
         mean_norm = lambda x: np.round((x-x.mean())/(x.max() - x.min()), 6)
 
-        df['user_activity'] = min_max_norm(np.array([round(x,6) if x<1 else 1 for x in np.random.normal(loc=0.9, scale=0.5, size=n)]))
-        df['pol_interest'] = min_max_norm(np.random.normal(loc=0.5, scale=0.5, size=n))
+        df['user_activity'] = min_max_norm(np.random.normal(loc=0.5, scale=0.5, size=n))
         df['privacy_preference'] = min_max_norm(np.random.normal(loc=0.5, scale=0.5, size=n))
         df['user_satisfaction'] = [0] * n
 
-#         dist = mean_norm(np.random.normal(loc=0.0, scale=1.0, size=n))
-#         dist = 2.*(dist - np.min(dist))/np.ptp(dist)-1
-#         df['pol_inclination'] = list(dist)
-#         #df['pol_inclination'] = list(np.random.choice(a=[-1, -0.1, 0, 0.1, 1], size=n, p=[0.05, 0.20, 0.50, 0.20, 0.05]))
-        
-        for i in range(n_issues):
-            
-            dist = mean_norm(np.random.normal(loc=0.0, scale=1.0, size=df.shape[0]))
-            dist = 2.*(dist - np.min(dist))/np.ptp(dist)-1
-            
+        for i in range(n_issues):    
+            # df['issue_'+str(i)] = [0] * df.shape[0]
+            dist = np.random.normal(loc=0.0, scale=0.25, size=n)
+            dist = self.normalize(dist, -1, min(dist), 1, max(dist))
             df['issue_'+str(i)] = dist
+            #post_conf = pd.DataFrame(dist1 + dist2, columns = ['stance'])
+            
+            #df['issue_'+str(i)] = min_max_norm(np.array([round(x,6) if x<1 else 1 for x in np.random.normal(loc=0.5, scale=0.5, size=n)]))
             
         df['pol_inclination'] = self.get_agent_pol_inclinations(df, n_issues)
             
@@ -167,3 +173,20 @@ class Data:
             
         df = shuffle(df)
         return df
+    
+    def compute_polarization(self, pol_incl):
+    
+        mu = 0
+        pop1 = pol_incl[pol_incl > 0]
+        pop2 = pol_incl[pol_incl < 0]
+        
+        if(pop1.shape[0] != 0 and pop2.shape[0] != 0):
+            
+            dA = abs(len(pop1) - len(pop2))/pol_incl.shape[0]
+            d = abs(pop1.mean() - pop2.mean())/2
+            mu = (1-dA) * d
+
+        return mu
+
+    
+    

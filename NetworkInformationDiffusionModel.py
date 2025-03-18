@@ -1,3 +1,5 @@
+### This code defines the network and all agents for the information diffusion model
+
 import time, enum, math
 import numpy as np
 import pandas as pd

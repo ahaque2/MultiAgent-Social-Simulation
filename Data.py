@@ -1,3 +1,5 @@
+### This code controls the flow of information in the social network
+
 import time, enum, math
 import numpy as np
 import pandas as pd
